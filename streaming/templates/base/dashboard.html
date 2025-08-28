@@ -21,7 +21,7 @@
 <body>
    
    
-       <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
         <a class="navbar-brand me-2" href="#">
             <i class="fas fa-user-shield me-2"></i>Administrador
@@ -33,7 +33,7 @@
         
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                {% if perms.auth.view_videos %}
+                {% if perms.streaming.view_videos %}
                 <li class="nav-item">
                     <a class="nav-link active" href="{% url 'administrador' %}"><i class="fas fa-home me-1"></i> Inicio</a>
                 </li>
@@ -52,7 +52,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="{% static 'img/perf.png' %}" alt="Imagen de perfil del usuario" class="rounded-circle profile-img me-1">
-                        <span class="d-none d-lg-inline">Usuario</span>
+                        <span class="d-none d-lg-inline">{{ user.username }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <li><a class="dropdown-item" href="{% url 'perfil' %}"><i class="fas fa-user-circle me-2"></i> Perfil</a></li>

@@ -20,10 +20,10 @@
     <main>
         <div class="container-fluid px-4">
             <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
-                {% if perm.auth.view_videos %}
+                {% if perms.streaming.view_videos %}
                 <h3 class="mb-0">MercalStream - Videos</h3>
                 {% endif %}
-                {% if perm.auth.add_videos %}
+                {% if perms.streaming.add_videos %}
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Nuevo Video
                 </button>
@@ -33,11 +33,9 @@
 
 
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-
                 {% for video in videos %}
-
                 <div class="col">
-                   {% if perm.auth.view_videos %}
+                   {% if perms.streaming.view_videos %}
                         <div class="card h-100">
                             <video class="card-img-top" controls>
                                 <source src="{{ video.location.url }}" type="video/mp4">
@@ -51,11 +49,9 @@
                                     data-bs-target="#editarvideos{{ video.video_id }}">
                                     Editar
                                 </a>
-
                                 {% url 'eliminar_video_admin' video.video_id as ruta %}
                                 <a href="#" class="btn btn-danger"
                                     onclick="confirmarEliminar(event, '{{ruta}}')">Eliminar</a>
-
                                 <script>
                                     function confirmarEliminar(event, url) {
                                         event.preventDefault(); // Evita que el enlace navegue inmediatamente
@@ -76,17 +72,12 @@
                                         });
                                     }
                                 </script>
-
-
-
-
                             </div>
                     </div>
                     {% endif %}
                 </div>
                 {% include 'modal/editar_video.html' %}
                 {% endfor %}
-
             </div>
 
             <nav aria-label="Paginación" class="mt-4">
@@ -96,6 +87,4 @@
         </div>
     </main>
 </div>
-
-
 {% endblock %}

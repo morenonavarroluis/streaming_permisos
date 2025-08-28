@@ -15,6 +15,7 @@ from django.db import transaction
 from math import log, floor
 from django.contrib.auth.decorators import permission_required
 
+
 def videos(request):
     videos = Videos.objects.all()
     return render(request, 'paginas/videos.html', {'videos': videos})
@@ -38,6 +39,7 @@ def inicio(request):
         form = AuthenticationForm()
         return render(request, 'paginas/login.html', {'form': form})
 
+@permission_required('streaming.view_videos', raise_exception=True)
 def administrador(request):
     videos = Videos.objects.all()
     return render(request, 'paginas/administrador.html', {'videos': videos})
