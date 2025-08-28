@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'panel.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'streaming',
+        'NAME': 'strea',
         'USER': 'lnavarro',
         'PASSWORD': '123456',
         'HOST': 'localhost',

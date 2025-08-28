@@ -49,7 +49,7 @@
                                     data-bs-target="#editarvideos{{ video.video_id }}">
                                     Editar
                                 </a>
-                                {% url 'eliminar_video_admin' video.video_id as ruta %}
+                                {% url 'eliminar_video' video.video_id as ruta %}
                                 <a href="#" class="btn btn-danger"
                                     onclick="confirmarEliminar(event, '{{ruta}}')">Eliminar</a>
                                 <script>

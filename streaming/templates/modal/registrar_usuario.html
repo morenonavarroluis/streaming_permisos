@@ -9,7 +9,7 @@
       <div class="modal-body">
        
         
-        <form action="regis_user_admin" method="POST">
+        <form action="registrar_usuario" method="POST">
           {% csrf_token %}
 
           <div class="mb-3">
@@ -29,7 +29,7 @@
 
         <div class="mb-3">
             <label for="rol" class="form-label">Rol</label>
-            <select class="form-select" id="rol" name="rol" required>
+            <select class="form-select" id="rol" name="rol" >
                 <option value="" selected disabled>Seleccione un rol</option>
                 
                 {% for grou in user.groups.all %}

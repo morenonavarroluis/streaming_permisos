@@ -59,11 +59,11 @@
             <td>{{ user.first_name }}</td>
             
             <td>
-                {% for group in user.groups.all %}
-                    <span >{{ group.name }}</span>
-                {% empty %}
-                    <span >Sin grupo asignado</span>
-                {% endfor %}
+              {% for group in user.groups.all %}
+                        <span>{{ group.name }}</span>
+                    {% empty %}
+                        <span>Sin grupo asignado</span>
+                    {% endfor %}
             </td>
             
             <td>
