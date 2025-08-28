@@ -177,6 +177,38 @@ def registrar_usuario(request):
     return render(request, 'paginas/usuarios.html')
 
 
+def registrar_grupo(request):
+    if request.method == 'POST':
+        nombre_rol = request.POST.get('nombre_rol')
+        permisos_seleccionados = request.POST.getlist('permisos')
+
+        if not nombre_rol:
+            messages.error(request, 'El nombre del rol no puede estar vacío.')
+            return redirect('usuarios')
+
+        try:
+           
+            group, created = Group.objects.get_or_create(name=nombre_rol)
+
+           
+            permisos_db = Permission.objects.filter(codename__in=permisos_seleccionados)
+
+            
+            group.permissions.set(permisos_db)
+
+            if created:
+                messages.success(request, f'El grupo {nombre_rol} ha sido creado con éxito y los permisos han sido asignados.')
+            else:
+                messages.success(request, f'Los permisos para el grupo {nombre_rol} han sido actualizados con éxito.')
+                
+            return redirect('usuarios') # Redirecciona a una página de éxito
+        
+        except Exception as e:
+            messages.error(request, f'Ocurrió un error: {e}')
+            return redirect('usuarios')
+
+   
+    return render(request, 'paginas/usuarios.html')
 
 def format_bytes(bytes_value, precision=2):
     """

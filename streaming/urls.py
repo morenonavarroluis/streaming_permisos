@@ -12,6 +12,7 @@ urlpatterns = [
     path('eliminar_video/<int:video_id>' , views.eliminar_video, name='eliminar_video'),
     path('usuarios', views.usuarios, name='usuarios'),
     path('registrar_usuario', views.registrar_usuario , name='registrar_usuario'),
+    path('registrar_grupo', views.registrar_grupo , name='registrar_grupo'),
     path('espacio_disco', views.espacio_disco, name='espacio_disco'),
     path('perfil', views.perfil, name='perfil'),
     path('logout', views.logout_view, name='logout'),

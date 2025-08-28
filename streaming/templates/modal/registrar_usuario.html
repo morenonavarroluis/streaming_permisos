@@ -32,7 +32,7 @@
             <select class="form-select" id="rol" name="rol" >
                 <option value="" selected disabled>Seleccione un rol</option>
                 
-                {% for grou in user.groups.all %}
+                {% for grou in groups %}
                     <option value="{{ grou.id }}">{{ grou.name }}</option>
                 {% empty %}
                     <option disabled>No hay grupos disponibles</option>
