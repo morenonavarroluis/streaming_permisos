@@ -1,0 +1,15 @@
+   .progress-container {
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #e5e7eb;
+        }
+        .progress-bar {
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        .disk-icon {
+            width: 40px;
+            height: 40px;
+            filter: invert(30%) sepia(70%) saturate(1500%) hue-rotate(200deg) brightness(90%) contrast(80%);
+        }

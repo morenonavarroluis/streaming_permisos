@@ -1,0 +1,30 @@
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Subir Nuevo Video</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <form action="video_regis" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="videoName" class="form-label">Nombre del Video</label>
+                        <input type="text" name="name" class="form-control" id="videoName" placeholder="Escribe el nombre del video" aria-label="Nombre del Video" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="videoFile" class="form-label">Seleccionar Video</label>
+                        <input type="file" name="video" class="form-control" id="videoFile" aria-label="Seleccionar Video" accept="video/*" required>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

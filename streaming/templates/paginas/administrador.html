@@ -1,0 +1,101 @@
+{% extends "base/dashboard.html" %}
+
+{% block titulo %}MercalStream - Videos{% endblock %}
+
+{% block content %}
+<div id="layoutSidenav_content">
+
+    {% if messages %}
+    {% for message in messages %}
+    <script>
+        Swal.fire({
+            title: '{{ message.tags|title }}',
+            text: '{{ message }}',
+            icon: '{{ message.tags }}'
+        });
+    </script>
+    {% endfor %}
+    {% endif %}
+
+    <main>
+        <div class="container-fluid px-4">
+            <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+                {% if perm.auth.view_videos %}
+                <h3 class="mb-0">MercalStream - Videos</h3>
+                {% endif %}
+                {% if perm.auth.add_videos %}
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Nuevo Video
+                </button>
+                {% endif %}
+            </div>
+            {% include 'modal/registrar_video.html' %}
+
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+
+                {% for video in videos %}
+
+                <div class="col">
+                   {% if perm.auth.view_videos %}
+                        <div class="card h-100">
+                            <video class="card-img-top" controls>
+                                <source src="{{ video.location.url }}" type="video/mp4">
+                                Tu navegador no soporta la etiqueta de video.
+                            </video>
+                            <div class="card-body">
+                                <h5 class="card-title text-center">{{ video.video_name }}</h5>
+                            </div>
+                            <div class="card-footer d-flex justify-content-center">
+                                <a href="#" class="btn btn-warning me-2" data-bs-toggle="modal"
+                                    data-bs-target="#editarvideos{{ video.video_id }}">
+                                    Editar
+                                </a>
+
+                                {% url 'eliminar_video_admin' video.video_id as ruta %}
+                                <a href="#" class="btn btn-danger"
+                                    onclick="confirmarEliminar(event, '{{ruta}}')">Eliminar</a>
+
+                                <script>
+                                    function confirmarEliminar(event, url) {
+                                        event.preventDefault(); // Evita que el enlace navegue inmediatamente
+
+                                        Swal.fire({
+                                            title: '¿Estás seguro?',
+                                            text: '¡No podrás revertir esto!',
+                                            icon: 'warning',
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#d33',
+                                            cancelButtonColor: '#3085d6',
+                                            confirmButtonText: 'Sí, ¡elimínalo!',
+                                            cancelButtonText: 'Cancelar'
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = url; // Redirige a la URL de eliminación si el usuario confirma
+                                            }
+                                        });
+                                    }
+                                </script>
+
+
+
+
+                            </div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% include 'modal/editar_video.html' %}
+                {% endfor %}
+
+            </div>
+
+            <nav aria-label="Paginación" class="mt-4">
+                <ul class="pagination justify-content-center">
+                </ul>
+            </nav>
+        </div>
+    </main>
+</div>
+
+
+{% endblock %}

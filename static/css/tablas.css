@@ -1,0 +1,98 @@
+.conta {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 900px;
+    margin-left: auto;  /* Add this line */
+    margin-right: auto; /* Add this line */
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 15px; /* Espacio entre los controles */
+}
+
+#searchInput, #rowsPerPage {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    flex: 1; /* Permite que ocupen el espacio disponible */
+}
+
+#searchInput {
+    max-width: 60%; /* Ajusta el ancho máximo del input de búsqueda */
+}
+#rowsPerPage {
+    max-width: 30%; /* Ajusta el ancho máximo del select */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+
+table thead th {
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+}
+
+table tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    color: #555;
+}
+
+table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+
+.pagination button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.pagination span {
+    font-size: 16px;
+    color: #333;
+}
+
+

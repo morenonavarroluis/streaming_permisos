@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %} {% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static './css/nuevo.css' %}">
+    <link href="{% static './estilos/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!-- Cambia a un archivo local si es necesario -->
+    <link rel="stylesheet" href="{% static './css/tablas.css' %}">
+    <link rel="stylesheet" href="{% static './css/perfil.css' %}">
+    <link rel="shortcut icon" href="{% static './img/logo.png' %}" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+</head>
+
+<body>
+   
+   
+       <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand me-2" href="#">
+            <i class="fas fa-user-shield me-2"></i>Administrador
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% if perms.auth.view_videos %}
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'administrador' %}"><i class="fas fa-home me-1"></i> Inicio</a>
+                </li>
+                {% endif %}
+               {% if perms.auth.view_user %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'usuarios' %}"><i class="fas fa-users me-1"></i> Usuarios</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'espacio_disco' %}"><i class="fas fa-map-marker-alt me-1"></i> Espacio Libre</a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{% static 'img/perf.png' %}" alt="Imagen de perfil del usuario" class="rounded-circle profile-img me-1">
+                        <span class="d-none d-lg-inline">Usuario</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="{% url 'perfil' %}"><i class="fas fa-user-circle me-2"></i> Perfil</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Configuración</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-2"></i> Salir</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <button class="btn ms-2" id="themeToggle" aria-label="Cambiar tema">
+                <i class="fas fa-moon" style="color: rgb(255, 255, 255);" id="themeIcon"></i>
+            </button>
+        </div>
+    </div>
+</nav>
+    {% block content %}
+    {% endblock %}
+
+
+      
+     <script src="{% static 'estilos/js/tablas.js' %}" ></script>
+    <script src="{% static 'estilos/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'estilos/js/dark.js' %}"></script>
+    
+ 
+
+
+
+</body>
+</html>

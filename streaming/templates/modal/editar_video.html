@@ -1,0 +1,21 @@
+<div class="modal fade" id="editarvideos{{ video.video_id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Editar nombre del video</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form action="" method="post">
+        {% csrf_token %} 
+        <div class="modal-body">
+            <input type="text" class="form-control" name="video_name" value="{{ video.video_name }}">
+        </div>
+        <div class="modal-footer text-center">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+    </form>
+    </div>
+  </div>
+</div>

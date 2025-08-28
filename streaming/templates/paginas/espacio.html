@@ -1,0 +1,83 @@
+{% extends "base/dashboard.html" %}
+
+{% block titulo %}MercalStream - Estado del Disco{% endblock %}
+
+{% block content %}
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-4 py-8">
+            <h1 class="text-3xl font-bold mb-8 text-center text-emphasis-dark">
+                Espacio del Disco
+            </h1>
+
+            {% if main_disk_data %}
+            <div class="card bg-body-tertiary rounded-lg shadow-lg p-5 mt-5">
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted small">Última actualización: {{ main_disk_data.last_updated }}</span>
+                </div>
+
+                <div class="row p-6">
+                    <div class="col-md-4 mb-4">
+                        <div class="bg-primary text-white p-4 rounded-lg">
+                            <div class="font-weight-bold">Total</div>
+                            <div class="h2">{{ main_disk_data.total }}</div>
+                            <div class="small">{{ main_disk_data.total }} disponible</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <div class="bg-success text-white p-4 rounded-lg">
+                            <div class="font-weight-bold">Libre</div>
+                            <div class="h2">{{ main_disk_data.free }}</div>
+                            <div class="small">{{ main_disk_data.percentage_free }}% disponible</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <div class="bg-danger text-white p-4 rounded-lg">
+                            <div class="font-weight-bold">En uso</div>
+                            <div class="h2">{{ main_disk_data.used }}</div>
+                            <div class="small">{{ main_disk_data.percentage_used }}% utilizado</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="card bg-body-tertiary rounded-lg shadow-lg px-5 mt-2">
+                <br>
+                <h2 class="h4 font-weight-semibold mb-4 text-emphasis-dark">Particiones del sistema</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Partición</th>
+                                <th>Total</th>
+                                <th>Libre</th>
+                                <th>En uso</th>
+                                <th>%</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for partition in partitions %}
+                            <tr>
+                                <td>{{ partition.name }}</td>
+                                <td>{{ partition.total }}</td>
+                                <td>{{ partition.free }}</td>
+                                <td>{{ partition.used }}</td>
+                                <td>
+                                    </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5">No se pudo obtener la información de las particiones.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

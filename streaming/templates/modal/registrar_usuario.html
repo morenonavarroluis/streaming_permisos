@@ -1,0 +1,53 @@
+<div class="modal fade" id="Modalusuarioadmin" tabindex="-1" aria-labelledby="modalUser AdminLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalUser AdminLabel">Registrar Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+
+      <div class="modal-body">
+       
+        
+        <form action="regis_user_admin" method="POST">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="first_name" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="username" class="form-label">Usuario</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+          </div>
+
+        <div class="mb-3">
+            <label for="rol" class="form-label">Rol</label>
+            <select class="form-select" id="rol" name="rol" required>
+                <option value="" selected disabled>Seleccione un rol</option>
+                
+                {% for grou in user.groups.all %}
+                    <option value="{{ grou.id }}">{{ grou.name }}</option>
+                {% empty %}
+                    <option disabled>No hay grupos disponibles</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+          
+        
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'estilos/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/nuevo.css' %}">
+  <title>{% block titulo %}  {% endblock %}</title>
+  <link rel="shortcut icon" href="{% static './img/logo.png' %}" type="image/x-icon">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="vh-100" style="border: 1px solid black;">
+ 
+  <section class="h-100 gradient-form" style="background-color: #eee;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-xl-10">
+          <div class="card text-black border-custom">
+            <div class="row g-0 rounded-5 caja-lg border-custom">
+              <div class="col-lg-6 border-custom">
+                <div class="card-body p-md-5 mx-md-4">
+                  <div class="text-center">
+                       
+   
+                    <img src="{% static 'img/logo.png' %}" class="img-fluid" style="height:250px;" alt="logo">
+                  </div>
+                  
+                   {% block content %}
+                  
+                    {% endblock %}
+                    
+                 </div>
+                  
+              </div>
+              <div class="col-lg-6 d-flex align-items-center gradient-custom-2 border-custom-img" style="
+                background: url(../../../static/img/fondo.jpeg) rgba(0, 0, 0, .3);
+                background-position: center;
+                background-size: cover;
+                background-blend-mode: overlay;
+              ">
+                <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                  <form action="" method="POST">
+                    <!-- <input pattern=".{3,}" required title="minimo 3 caracteres" maxlength="8">
+                    <input type="submit" value="aceptar"> -->
+                  </form>
+                </div> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="{% static 'estilos/js/bootstrap.bundle.min.js' %}"></script>

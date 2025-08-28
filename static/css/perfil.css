@@ -1,0 +1,267 @@
+ :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .co {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 30px 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid white;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-photo:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-name {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+
+        .profile-title {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .profile-bio {
+            max-width: 600px;
+            margin: 0 auto 20px;
+            color: #666;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .profile-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .profile-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .profile-section {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill {
+            background-color: var(--light-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .skill:hover {
+            background-color: var(--primary-color);
+            color: white;
+            cursor: default;
+            transform: translateY(-2px);
+            transition: all 0.2s ease;
+        }
+
+        .activity-item {
+            display: flex;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--light-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--primary-color);
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex-grow: 1;
+        }
+
+        .activity-date {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 5px;
+        }
+
+        .activity-description {
+            color: #555;
+        }
+
+        .profile-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .edit-profile {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--light-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .edit-profile:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .follow-btn {
+            position: absolute;
+            top: 20px;
+            right: 75px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .follow-btn:hover {
+            background-color: #27ae60;
+        }

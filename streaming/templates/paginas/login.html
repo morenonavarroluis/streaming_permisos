@@ -1,0 +1,28 @@
+{% extends 'base/login.html' %}
+{% block titulo %} Login {% endblock %}
+
+{% block content %}
+                   
+                  <form action="inicio" method="POST" class="m-auto" style="width: 90%">
+                    {% csrf_token %}
+                    <p class="text-center">Por favor, ingresa tus credenciales</p>
+
+                    <div class="form-group mb-4">
+                      <i class="fas fa-user form-control-feedback"></i>
+                      <input type="text" name="username" maxlength="10" required class="form-control my-input" placeholder="Usuario">
+                    </div>
+
+                    <div class="form-outline mb-4">
+                      <i class="fas fa-lock form-control-feedback"></i>
+                      <input type="password" name="password" required maxlength="10" class="form-control my-input" placeholder="Contraseña">
+                    </div>
+
+                    <div class="text-center pt-1 mb-5 pb-1">
+                      <button class="btn btn-outline-primary btn-custom fa-lg mb-3" type="submit" style="padding: 10px 0; width: 100%;">Ingresar</button>
+                      <a class="stri" href="{% url 'video' %}">streaming</a>
+                    </div>
+                  </form>
+                  <p class="text-muted text-center">&copy; Mercal C.A 2025</p>
+{% endblock %}
+
+               
