@@ -210,6 +210,61 @@ def registrar_grupo(request):
    
     return render(request, 'paginas/usuarios.html')
 
+def eliminar_user_admin(request, id):
+        user = get_object_or_404(User, id=id)
+        if request.method == 'GET':
+            username_delete = user.first_name
+            user.delete()
+            messages.success(request, f'El usuario {username_delete} fue eliminado exitosamente.')
+            return redirect('usuarios')
+        return render(request, 'paginas/usuarios.html', {'user': user})
+
+
+
+def edit_user(request, id):
+   
+    user_to_update = get_object_or_404(User, id=id)
+
+   
+    current_group = user_to_update.groups.first()
+
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        rol_id = request.POST.get('rol') 
+
+        if first_name and first_name != user_to_update.first_name:
+            user_to_update.first_name = first_name
+        
+        if username and username != user_to_update.username:
+            user_to_update.username = username
+            
+        if password and password != user_to_update.password:
+            user_to_update.set_password(password)
+
+       
+        if rol_id:
+            try:
+                new_group = Group.objects.get(id=rol_id)
+                user_to_update.groups.clear()
+                user_to_update.groups.add(new_group)
+            except Group.DoesNotExist:
+                messages.error(request, 'El rol seleccionado no es válido.')
+        
+        user_to_update.save()
+        
+        messages.success(request, 'El usuario se actualizó exitosamente.')
+        return redirect('usuarios') 
+    
+   
+    groups = Group.objects.all()
+    return render(request, 'paginas/usuario.html', {
+        'current_group': current_group,
+    })
+        
+        
+
 def format_bytes(bytes_value, precision=2):
     """
     Convierte un valor en bytes a una unidad más legible (KB, MB, GB, TB).
