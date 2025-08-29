@@ -3,126 +3,145 @@
 {% block titulo %}MercalStream - Videos{% endblock %}
 
 {% block content %}
-  <div id="layoutSidenav_content">
-           
+<div id="layoutSidenav_content">
+
 
     {% if messages %}
-           {% for message in messages %}
-               <script>
-                   Swal.fire({
-                       title: '{{ message.tags|title }}',
-                       text: '{{ message }}',
-                       icon: '{{ message.tags }}'
-                   });
-               </script>
-           {% endfor %}
-       {% endif %}
-    
-        <main>
-                
-                       
-                     
-                            <br>
-                            <br>
-    <div class="conta card">
-        <h2>Usuarios</h2>
-           <div>
-       <button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#Modalrol" style="float: left; margin:-66px 30px 0px 0px;">Nueva Rol</button>
-                 {% include 'modal/registrar_rol.html' %}
-        <button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#Modalusuarioadmin" style="float: right; margin:-66px 30px 0px 0px;">Nueva Usuario</button>
-            {% include 'modal/registrar_usuario.html' %}
-           </div>
-          
-        <div class="controls">
-            <input type="text" id="searchInput" placeholder="Buscar usuario...">
-            <select id="rowsPerPage">
-                <option value="5">5 por página</option>
-                <option value="10">10 por página</option>
-                <option value="20">20 por página</option>
-            </select>
-        </div>
+    {% for message in messages %}
+    <script>
+        Swal.fire({
+            title: '{{ message.tags|title }}',
+            text: '{{ message }}',
+            icon: '{{ message.tags }}'
+        });
+    </script>
+    {% endfor %}
+    {% endif %}
 
-                <table id="myTable" class="table table-hover table-striped table-responsive">
+    <main>
+
+
+
+        <br>
+        <br>
+        <div class="conta card">
+            <h2>Usuarios</h2>
+            <div>
+                <div class="d-flex justify-content-between my-2">
+                    {% if perms.auth.add_group %}
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Modalrol">
+                        Nuevo Rol
+                    </button>
+                    {% endif %}
+
+                    {% if perms.auth.add_user %}
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Modalusuarioadmin">
+                        Nuevo Usuario
+                    </button>
+                    {% endif %}
+                </div>
+
+                {% include 'modal/registrar_rol.html' %}
+                {% include 'modal/registrar_usuario.html' %}
+            </div>
+            <div class="controls">
+                <input type="text" id="searchInput" placeholder="Buscar usuario...">
+                <select id="rowsPerPage">
+                    <option value="5">5 por página</option>
+                    <option value="10">10 por página</option>
+                    <option value="20">20 por página</option>
+                </select>
+            </div>
+
+            <table id="myTable" class="table table-hover table-striped table-responsive">
                 <thead>
                     <tr>
                         <th>Usuario</th>
                         <th>Nombre</th>
                         <th>Rol</th>
-                       
-                        <th >accion</th>
+
+                        <th>accion</th>
                     </tr>
                 </thead>
-           <tbody>
-    {% for user in usuarios %}
-        <tr>
-            <td>{{ user.username }}</td>
-            <td>{{ user.first_name }}</td>
-            
-            <td>
-              {% for group in user.groups.all %}
-                        <span>{{ group.name }}</span>
-                    {% empty %}
-                        <span>Sin grupo asignado</span>
-                    {% endfor %}
-            </td>
-            
-            <td>
-                <div class="btn-group">
-                                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Opción
-                                      </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#Modalpersonaadmineditar{{ user.id }}" href="#">Editar</a></li>
-                                                    {% url 'eliminar_user_admin' user.id as ruta %}
-                          <li>  <a href="#" class="dropdown-item"
-                                onclick="confirmarEliminar(event, '{{ruta}}')">Eliminar</a></li>
+                <tbody>
+                    {% for user in usuarios %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.first_name }}</td>
 
-                            <script>
-                                function confirmarEliminar(event, url) {
-                                    event.preventDefault(); // Evita que el enlace navegue inmediatamente
+                        <td>
+                            {% for group in user.groups.all %}
+                            <span>{{ group.name }}</span>
+                            {% empty %}
+                            <span>Sin grupo asignado</span>
+                            {% endfor %}
+                        </td>
 
-                                    Swal.fire({
-                                        title: '¿Estás seguro?',
-                                        text: '¡No podrás revertir esto!',
-                                        icon: 'warning',
-                                        showCancelButton: true,
-                                        confirmButtonColor: '#d33',
-                                        cancelButtonColor: '#3085d6',
-                                        confirmButtonText: 'Sí, ¡elimínalo!',
-                                        cancelButtonText: 'Cancelar'
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location.href = url; // Redirige a la URL de eliminación si el usuario confirma
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-success btn-sm dropdown-toggle"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Opción
+                                </button>
+                                <ul class="dropdown-menu">
+                                    {% if perms.auth.change_user %}
+                                    <li><a class="dropdown-item" data-bs-toggle="modal"
+                                            data-bs-target="#Modalpersonaadmineditar{{ user.id }}" href="#">Editar</a>
+                                    </li>
+                                    {% endif %}
+                                    {% if perms.auth.delete_user %}
+
+                                    {% url 'eliminar_user_admin' user.id as ruta %}
+
+                                    <li> <a href="#" class="dropdown-item"
+                                            onclick="confirmarEliminar(event, '{{ruta}}')">Eliminar</a></li>
+                                    {% endif %}
+                                    <script>
+                                        function confirmarEliminar(event, url) {
+                                            event.preventDefault(); // Evita que el enlace navegue inmediatamente
+
+                                            Swal.fire({
+                                                title: '¿Estás seguro?',
+                                                text: '¡No podrás revertir esto!',
+                                                icon: 'warning',
+                                                showCancelButton: true,
+                                                confirmButtonColor: '#d33',
+                                                cancelButtonColor: '#3085d6',
+                                                confirmButtonText: 'Sí, ¡elimínalo!',
+                                                cancelButtonText: 'Cancelar'
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    window.location.href = url; // Redirige a la URL de eliminación si el usuario confirma
+                                                }
+                                            });
                                         }
-                                    });
-                                }
-                            </script>
-                        
-                    </ul>
-                </div>
-            </td>
-        </tr>
+                                    </script>
 
-        {% include 'modal/editar_usuarios.html' %}
-    {% endfor %}
-                                         
-                    </tbody>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+
+                    {% include 'modal/editar_usuarios.html' %}
+                    {% endfor %}
+
+                </tbody>
             </table>
 
-        <div class="pagination">
-            <button id="prevBtn">Anterior</button>
-            <h6 id="pageNumbers"></h6>
-            <button id="nextBtn">Siguiente</button>
-        </div>
-    </div>
-                        
-                    
-                </main>
-
-         
+            <div class="pagination">
+                <button id="prevBtn">Anterior</button>
+                <h6 id="pageNumbers"></h6>
+                <button id="nextBtn">Siguiente</button>
             </div>
         </div>
 
 
-        
+    </main>
+
+
+</div>
+</div>
+
+
+
 {% endblock %}
