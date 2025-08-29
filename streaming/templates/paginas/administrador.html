@@ -45,13 +45,17 @@
                                 <h5 class="card-title text-center">{{ video.video_name }}</h5>
                             </div>
                             <div class="card-footer d-flex justify-content-center">
+                                {% if perms.streaming.add_videos %}
                                 <a href="#" class="btn btn-warning me-2" data-bs-toggle="modal"
                                     data-bs-target="#editarvideos{{ video.video_id }}">
                                     Editar
                                 </a>
+                                {% endif %}
+                                {% if perms.streaming.delete_videos %}
                                 {% url 'eliminar_video' video.video_id as ruta %}
                                 <a href="#" class="btn btn-danger"
                                     onclick="confirmarEliminar(event, '{{ruta}}')">Eliminar</a>
+                                {% endif %}
                                 <script>
                                     function confirmarEliminar(event, url) {
                                         event.preventDefault(); // Evita que el enlace navegue inmediatamente
