@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)ysn%e2scbi$^d=jmu)q_r&0lnjj0@604)ra$_=szywj4!=)y='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','10.20.22.93']
 
 
 # Application definition
@@ -52,7 +52,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'panel.urls'
 
-LOGIN_URL = 'login'
+LOGIN_URL = 'inicio'
 
 TEMPLATES = [
     {

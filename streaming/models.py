@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Videos(models.Model):
@@ -10,3 +11,10 @@ class Videos(models.Model):
 
     class Meta:
         db_table = 'video'
+        
+        
+class Historial(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    descripcion_historial = models.TextField(max_length=200)
+    tabla_afectada_historial = models.TextField(max_length=100)
+    fecha_hora_historial = models.DateTimeField()

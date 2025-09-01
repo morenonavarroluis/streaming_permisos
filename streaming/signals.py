@@ -32,19 +32,19 @@ def translate_permissions(sender, **kwargs):
         return
 
     for p in permissions:
-        # Extraer el verbo del nombre del permiso
+     
         perm_parts = p.codename.split('_')
         verb = perm_parts[0]
 
-        # Obtener el nombre del modelo del ContentType
+       
         ct = p.content_type
         model_name = ct.model
 
-        # Si el modelo está en nuestro mapa, traducimos
+    
         if model_name in model_name_map:
             translated_model_name = model_name_map[model_name]
-            translated_verb = verbs_map.get(verb, verb)  # Usa el verbo original si no está en el mapa
+            translated_verb = verbs_map.get(verb, verb) 
 
-            # Actualizar el nombre del permiso
-            p.name = f"Puede {translated_verb} {translated_model_name}"
+          
+            p.name = f"{translated_verb} {translated_model_name}"
             p.save()

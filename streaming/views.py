@@ -4,7 +4,7 @@ from django.contrib import messages
 import shutil
 from django.conf import settings
 from django.shortcuts import redirect, render
-from .models import Videos
+from .models import Videos, Historial
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login ,logout 
 from django.contrib.auth.decorators import login_required
@@ -27,51 +27,87 @@ def inicio(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
-
+            
             if user is not None:
                 login(request, user)
-                return redirect('administrador') 
-
+                
+              
+                usuario = request.user.id
+                
+                descripcion = "Inicia Sesión"
+                tabla = "" 
+                fechayhora = datetime.now()
+                
+                try:
+                    his = Historial(descripcion_historial=descripcion, tabla_afectada_historial=tabla, fecha_hora_historial=fechayhora, usuario_id=usuario)
+                    his.save()
+                except Exception as e:
+                    # Es buena práctica manejar errores al guardar en el historial
+                    print(f"Error al guardar en el historial: {e}")
+                
+                return redirect('administrador')
+            else:
+                return render(request, 'paginas/login.html', {'form': form, 'error': 'Usuario o contraseña incorrectos'})
         else:
             return render(request, 'paginas/login.html', {'form': form, 'error': 'Usuario o contraseña incorrectos'})
-
     else:
         form = AuthenticationForm()
         return render(request, 'paginas/login.html', {'form': form})
-
+    
+@login_required
 @permission_required('streaming.view_videos', raise_exception=True)
 def administrador(request):
     videos = Videos.objects.all()
     return render(request, 'paginas/administrador.html', {'videos': videos})
 
 def registrar_video(request):
-       if request.method == 'POST':
-        video = Videos()
-        
+    if request.method == 'POST':
         
         new_video_name = request.POST.get('name')
-        
-        
         uploaded_file = request.FILES.get('video')
         
-        if uploaded_file and new_video_name:
-        
-            extension = os.path.splitext(uploaded_file.name)[1]
-            uploaded_file.name = new_video_name + extension
-            
-            
-            video.video_name = new_video_name
-            video.location = uploaded_file
-            
-           
-            video.save()
-            messages.success(request, f'El video "{new_video_name}" fue guardado exitosamente.')
-            return redirect('administrador')
-        else:
+       
+        if not uploaded_file or not new_video_name:
             messages.error(request, 'Debes proporcionar un nombre y un archivo de video.')
             return redirect('administrador')
+        
+        
+        extension = os.path.splitext(uploaded_file.name)[1]
+        
+      
+        file_name = f"{new_video_name}{extension}"
+        uploaded_file.name = file_name
+        
+        
+        try:
+            video = Videos(video_name=new_video_name, location=uploaded_file)
+            video.save()
             
-       return render(request, 'paginas/administrador.html') 
+          
+            if request.user.is_authenticated:
+                usuario = request.user.id
+                descripcion = (f"Registro del video: {new_video_name}")  
+                tabla = "Videos" 
+                fechayhora = datetime.now()
+                
+                historial_entry = Historial(
+                    descripcion_historial=descripcion,
+                    tabla_afectada_historial=tabla,
+                    fecha_hora_historial=fechayhora,
+                    usuario_id=usuario
+                )
+                historial_entry.save()
+                
+            messages.success(request, f'El video {new_video_name} fue guardado exitosamente.')
+        except Exception as e:
+            
+            print(f"Error al guardar el video o el historial: {e}")
+            messages.error(request, 'Ocurrió un error al guardar el video. Inténtalo de nuevo.')
+            
+        return redirect('administrador')
+    
+    # Si la solicitud no es POST, simplemente renderiza la página
+    return render(request, 'paginas/administrador.html')
    
 def editar_name_video(request, video_id): 
     
@@ -85,6 +121,19 @@ def editar_name_video(request, video_id):
             if new_video_name:
                 video.video_name = new_video_name
                 video.save()
+                if request.user.is_authenticated:
+                    usuario = request.user.id
+                    descripcion = (f"edito el nombre del video {new_video_name}")  
+                    tabla = "Videos" 
+                    fechayhora = datetime.now()
+                    
+                    historial_entry = Historial(
+                        descripcion_historial=descripcion,
+                        tabla_afectada_historial=tabla,
+                        fecha_hora_historial=fechayhora,
+                        usuario_id=usuario
+                    )
+                    historial_entry.save()
                 messages.success(request, f'El nombre del video fue actualizado exitosamente a {new_video_name}.')
             else:
                 
@@ -107,6 +156,19 @@ def eliminar_video(request, video_id):
     if request.method == 'GET':
         video_titulo = video.video_name
         video.delete()
+        if request.user.is_authenticated:
+                usuario = request.user.id
+                descripcion = ( f'elimino el video: {video_titulo}')  
+                tabla = "Videos" 
+                fechayhora = datetime.now()
+                
+                historial_entry = Historial(
+                    descripcion_historial=descripcion,
+                    tabla_afectada_historial=tabla,
+                    fecha_hora_historial=fechayhora,
+                    usuario_id=usuario
+                )
+                historial_entry.save()
         messages.success(request, f'El video {video_titulo} fue eliminado exitosamente.')
         return redirect('administrador')
     return render(request, 'paginas/administrador.html', {'video': video})
@@ -130,23 +192,23 @@ def registrar_usuario(request):
         username = request.POST.get('username', '').strip()
         password = request.POST.get('password', '').strip()
         rol_id = request.POST.get('rol')
-        print(rol_id)
-        # Validación de campos vacíos
+        
+        
         if not all([first_name, username, password, rol_id]):
             messages.error(request, 'Todos los campos son obligatorios.')
             return redirect('usuarios')
         
-        # Validación de longitud mínima de password
+        
         if len(password) < 8:
             messages.error(request, 'La contraseña debe tener al menos 8 caracteres.')
             return redirect('usuarios')
             
-        # Validación de formato de username
+        
         if not username.isalnum():
             messages.error(request, 'El nombre de usuario solo puede contener letras y números.')
             return redirect('usuarios')
             
-        # Verificar si el nombre de usuario ya existe
+        
         if User.objects.filter(username__iexact=username).exists():
             messages.error(request, 'El nombre de usuario ya existe. Por favor, elige otro.')
             return redirect('usuarios')
@@ -164,8 +226,20 @@ def registrar_usuario(request):
                 
                 rol_instance = get_object_or_404(Group, id=rol_id)
                 new_user.groups.add(rol_instance)
-
-               
+                 
+                if request.user.is_authenticated:
+                    usuario = request.user.id
+                    descripcion = ( f'se registro el usuaio : {username}')  
+                    tabla = "auth_user" 
+                    fechayhora = datetime.now()
+                    
+                    historial_entry = Historial(
+                        descripcion_historial=descripcion,
+                        tabla_afectada_historial=tabla,
+                        fecha_hora_historial=fechayhora,
+                        usuario_id=usuario
+                    )
+                    historial_entry.save()
 
                 messages.success(request, f'El usuario {username} ha sido registrado exitosamente.')
                 return redirect('usuarios')
@@ -188,16 +262,27 @@ def registrar_grupo(request):
 
         try:
            
-            group, created = Group.objects.get_or_create(name=nombre_rol)
-
-           
+            group, created = Group.objects.get_or_create(name=nombre_rol) 
             permisos_db = Permission.objects.filter(codename__in=permisos_seleccionados)
-
-            
             group.permissions.set(permisos_db)
+            
+            if request.user.is_authenticated:
+                    usuario = request.user.id
+                    descripcion = ( f'se registro el rol : {nombre_rol}')  
+                    tabla = "auth_permission" 
+                    fechayhora = datetime.now()
+                    
+                    historial_entry = Historial(
+                        descripcion_historial=descripcion,
+                        tabla_afectada_historial=tabla,
+                        fecha_hora_historial=fechayhora,
+                        usuario_id=usuario
+                    )
+                    historial_entry.save()
 
             if created:
-                messages.success(request, f'El grupo {nombre_rol} ha sido creado con éxito y los permisos han sido asignados.')
+                
+                 messages.success(request, f'El grupo {nombre_rol} ha sido creado con éxito y los permisos han sido asignados.')
             else:
                 messages.success(request, f'Los permisos para el grupo {nombre_rol} han sido actualizados con éxito.')
                 
@@ -215,6 +300,19 @@ def eliminar_user_admin(request, id):
         if request.method == 'GET':
             username_delete = user.first_name
             user.delete()
+            if request.user.is_authenticated:
+                    usuario = request.user.id
+                    descripcion = ( f'se elimino el usuario : {username_delete}')  
+                    tabla = "auth_user" 
+                    fechayhora = datetime.now()
+                    
+                    historial_entry = Historial(
+                        descripcion_historial=descripcion,
+                        tabla_afectada_historial=tabla,
+                        fecha_hora_historial=fechayhora,
+                        usuario_id=usuario
+                    )
+                    historial_entry.save()
             messages.success(request, f'El usuario {username_delete} fue eliminado exitosamente.')
             return redirect('usuarios')
         return render(request, 'paginas/usuarios.html', {'user': user})
@@ -253,6 +351,19 @@ def edit_user(request, id):
                 messages.error(request, 'El rol seleccionado no es válido.')
         
         user_to_update.save()
+        if request.user.is_authenticated:
+                    usuario = request.user.id
+                    descripcion = ( f'se edito el usuario : {user_to_update}')  
+                    tabla = "auth_user" 
+                    fechayhora = datetime.now()
+                    
+                    historial_entry = Historial(
+                        descripcion_historial=descripcion,
+                        tabla_afectada_historial=tabla,
+                        fecha_hora_historial=fechayhora,
+                        usuario_id=usuario
+                    )
+                    historial_entry.save()
         
         messages.success(request, 'El usuario se actualizó exitosamente.')
         return redirect('usuarios') 
@@ -277,7 +388,7 @@ def format_bytes(bytes_value, precision=2):
     return f"{bytes_value:.{precision}f} {units[pow_val]}"
 
 
-
+@login_required
 def espacio_disco(request):
     """
     Vista que calcula el estado del disco y lo pasa al template.
@@ -347,13 +458,44 @@ def format_bytes(bytes_val, precision=2):
     s = round(bytes_val / p, precision)
     return f"{s} {size_name[i]}"
 
+
 def perfil(request):
     return render(request, 'paginas/perfil.html')
+
+
+def history(request):
+    historial = Historial.objects.all()
+    x={
+      'historial':historial  
+    }
+    return render(request, 'paginas/history.html', x)
 
 
     
     
 
 def logout_view(request):
+    if request.user.is_authenticated:
+        try:
+          
+            usuario = request.user.id
+            descripcion = "Cierra Sesión"  
+            tabla = ""  
+            fechayhora = datetime.now()
+            
+            
+            his = Historial(
+                descripcion_historial=descripcion,
+                tabla_afectada_historial=tabla,
+                fecha_hora_historial=fechayhora,
+                usuario_id=usuario
+            )
+            his.save()
+        except Exception as e:
+            
+            print(f"Error al guardar en el historial: {e}")
+            pass 
+            
+  
     logout(request)
     return redirect('inicio')

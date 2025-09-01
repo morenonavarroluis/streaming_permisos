@@ -17,6 +17,7 @@ urlpatterns = [
     path('edit_user/<int:id>', views.edit_user, name='edit_user'),
     path('espacio_disco', views.espacio_disco, name='espacio_disco'),
     path('perfil', views.perfil, name='perfil'),
+    path('history', views.history, name='history'),
     path('logout', views.logout_view, name='logout'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

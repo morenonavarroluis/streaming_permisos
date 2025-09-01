@@ -44,8 +44,13 @@
                 </li>
                 {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'espacio_disco' %}"><i class="fas fa-map-marker-alt me-1"></i> Espacio Libre</a>
+                    <a class="nav-link" href="{% url 'espacio_disco' %}"><i class="fa-solid fa-box-archive"></i> Espacio Libre</a>
                 </li>
+                {% if perms.streaming.view_historial %}
+                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'history' %}"><i class="fa-solid fa-notes-medical"></i> historial</a>
+                </li>
+                 {% endif %}
             </ul>
 
             <ul class="navbar-nav">

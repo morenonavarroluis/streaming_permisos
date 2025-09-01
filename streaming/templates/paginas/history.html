@@ -1,0 +1,64 @@
+{% extends "base/dashboard.html" %}
+
+{% block titulo %}MercalStream - Videos{% endblock %}
+
+{% block content %}
+<div id="layoutSidenav_content">
+
+
+    <main>
+       <br>
+        <br>
+        <div class="conta card">
+            <h2>Historial</h2>
+           
+               
+            <div class="controls">
+                <input type="text" id="searchInput" placeholder="Buscar usuario...">
+                <select id="rowsPerPage">
+                    <option value="5">5 por página</option>
+                    <option value="10">10 por página</option>
+                    <option value="20">20 por página</option>
+                </select>
+            </div>
+
+            <table id="myTable" class="table table-hover table-striped table-responsive">
+                <thead>
+                    {{ tabla_afectada_historial }}
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Accion</th>
+                        
+                        <th>Tabla</th>
+                        
+                        <th>Fecha y Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for x in historial %}
+                    <tr>
+                       <td>{{ x.usuario.username }}</td>
+							<td>{{ x.descripcion_historial }}</td>
+                            
+							<td>{{ x.tabla_afectada_historial }}</td>
+                            
+						<td>{{ x.fecha_hora_historial }}</td>
+
+                       
+                    </tr>
+
+                  
+                    {% endfor %}
+
+                </tbody>
+            </table>
+
+            <div class="pagination">
+                <button id="prevBtn">Anterior</button>
+                <h6 id="pageNumbers"></h6>
+                <button id="nextBtn">Siguiente</button>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
